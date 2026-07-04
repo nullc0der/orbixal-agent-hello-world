@@ -1,0 +1,26 @@
+apiVersion: orbixal.ai/v1
+kind: agent
+
+metadata:
+  name: Orbixal Hello World Agent
+  slug: orbixal_hello_world_agent
+  version: 0.1.0
+  description: Prints a message and exits successfully.
+  tags:
+    - example
+    - hello-world
+    - job
+
+spec:
+  build:
+    context: "."
+    dockerfile: Dockerfile
+
+  runtime:
+    type: container
+    entrypoint:
+      cmd:
+        - /app/main.sh
+    timeouts:
+      startupSeconds: 30
+      requestSeconds: 60
