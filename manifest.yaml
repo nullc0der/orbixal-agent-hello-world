@@ -4,7 +4,7 @@ kind: agent
 metadata:
   name: Orbixal Hello World Agent
   slug: orbixal_hello_world_agent
-  version: 0.1.5
+  version: 0.1.6
   description: Prints a message and exits successfully.
   tags:
     - example
