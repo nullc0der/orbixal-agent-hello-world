@@ -1,6 +1,5 @@
 apiVersion: orbixal.ai/v1
 kind: agent
-fail: true
 
 metadata:
   name: Orbixal Hello World Agent
