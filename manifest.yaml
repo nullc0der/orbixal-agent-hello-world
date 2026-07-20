@@ -2,9 +2,9 @@ apiVersion: orbixal.ai/v1
 kind: agent
 
 metadata:
-  name: Orbixal Hello World Agent
-  slug: orbixal_hello_world_agent
-  version: 2.0.0
+  name: Orbixal Agent Hello World
+  slug: orbixal_agent_hello_world
+  version: 1.0.0
   description: Prints a message and exits successfully.
   tags:
     - example
