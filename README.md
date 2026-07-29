@@ -1,22 +1,33 @@
 # Orbixal Hello World Agent
 
-A minimal Orbixal agent intended to be scheduled as a runner `job`. It prints a message and exits with status code `0`.
+A minimal Orbixal agent intended to be scheduled as a runner `job`. It reads a JSON object from the Runner-provided input path and writes its JSON result to the Runner-provided output path.
 
 ## Run Locally
 
 ```bash
-./main.sh
+work_dir="$(mktemp -d)"
+cp -R examples "$work_dir"
+mkdir "$work_dir/output"
+ORBIXAL_INPUT_PATH="$work_dir/examples/input.json" \
+ORBIXAL_OUTPUT_PATH="$work_dir/output/result.json" \
+python main.py
+cat "$work_dir/output/result.json"
 ```
 
 ## Run With Docker
 
 ```bash
 docker build -t orbixal-hello-world-agent .
-docker run --rm orbixal-hello-world-agent
+work_dir="$(mktemp -d)"
+mkdir "$work_dir/input" "$work_dir/output"
+cp examples/input.json "$work_dir/input/input.json"
+docker run --rm \
+  -v "$work_dir/input:/orbixal/input:ro" \
+  -v "$work_dir/output:/orbixal/output" \
+  orbixal-hello-world-agent
+cat "$work_dir/output/result.json"
 ```
 
-To customize the output:
+The Runner injects `ORBIXAL_INPUT_PATH` and `ORBIXAL_OUTPUT_PATH`. The workload falls back to the JSON v1 contract paths `/orbixal/input/input.json` and `/orbixal/output/result.json`.
 
-```bash
-docker run --rm -e ORBIXAL_HELLO_MESSAGE="Hello from a runner job" orbixal-hello-world-agent
-```
+Standard output and standard error are logs only. The job result is the single JSON document written to the output path.

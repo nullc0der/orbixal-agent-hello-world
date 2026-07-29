@@ -4,8 +4,8 @@ kind: agent
 metadata:
   name: Orbixal Agent Hello World
   slug: orbixal_agent_hello_world
-  version: 1.0.3
-  description: Prints a message and exits successfully.
+  version: 1.0.4
+  description: Reads a JSON name and writes a JSON greeting.
   tags:
     - example
     - hello-world
@@ -18,9 +18,37 @@ spec:
 
   runtime:
     type: container
-    entrypoint:
-      cmd:
-        - /app/main.sh
+    supported_modes:
+      - job
+    default_mode: job
+    job:
+      execution:
+        command:
+          - python
+          - /app/main.py
     timeouts:
       startupSeconds: 30
       requestSeconds: 60
+
+  io:
+    contract: json-v1
+    input_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+    output_schema:
+      type: object
+      additionalProperties: false
+      required:
+        - greeting
+      properties:
+        greeting:
+          type: string
+    conformance_input:
+      name: Orbixal

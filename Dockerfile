@@ -1,11 +1,12 @@
-FROM redis:7-alpine
+FROM python:3.12-alpine
 
 WORKDIR /app
 
-COPY --chown=redis:redis main.sh ./main.sh
+RUN addgroup -S -g 10001 app \
+    && adduser -S -D -H -u 10001 -G app app
 
-RUN chmod 0555 /app/main.sh
+COPY --chown=app:app main.py ./main.py
 
-USER redis
+USER app
 
-ENTRYPOINT ["/app/main.sh"]
+CMD ["python", "/app/main.py"]
