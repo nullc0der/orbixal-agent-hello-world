@@ -10,7 +10,11 @@ The manifest declares three sample runtime secrets:
 - `HELLO_WORLD_SIGNING_KEY` — required
 - `HELLO_WORLD_WEBHOOK_TOKEN` — optional
 
-Orbixal injects selected secret values into the matching environment variables at runtime. This hello-world agent intentionally does not log or return those values; the declarations exercise the secret creation and deployment-selection workflow safely.
+Orbixal injects selected secret values into the matching environment variables at runtime. For manual end-to-end testing, this sample writes one `sample_runtime_secrets` JSON event containing all three raw values to standard output. A missing optional value is logged as `null`.
+
+Do not copy this logging behavior into a real workload. Runtime logs are not a safe place for production secrets.
+
+The sample also writes a `sample_runtime_identity` event showing the canonical runtime identity injected by Runner: listing ID, artifact ID, manifest version ID, container version, image digest, and workload slug.
 
 ## Run Locally
 

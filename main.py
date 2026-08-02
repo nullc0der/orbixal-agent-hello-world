@@ -7,6 +7,19 @@ from typing import Any
 
 DEFAULT_INPUT_PATH = Path("/orbixal/input/input.json")
 DEFAULT_OUTPUT_PATH = Path("/orbixal/output/result.json")
+SAMPLE_SECRET_NAMES = (
+    "HELLO_WORLD_API_KEY",
+    "HELLO_WORLD_SIGNING_KEY",
+    "HELLO_WORLD_WEBHOOK_TOKEN",
+)
+RUNTIME_IDENTITY_NAMES = (
+    "ORBIXAL_LISTING_ID",
+    "ORBIXAL_ARTIFACT_ID",
+    "ORBIXAL_MANIFEST_VERSION_ID",
+    "ORBIXAL_CONTAINER_VERSION",
+    "ORBIXAL_IMAGE_DIGEST",
+    "ORBIXAL_WORKLOAD_SLUG",
+)
 
 
 def _runtime_path(environment_name: str, default: Path) -> Path:
@@ -36,12 +49,44 @@ def _write_output(path: Path, value: dict[str, Any]) -> None:
     temporary_path.replace(path)
 
 
+def _log_sample_runtime_secrets() -> None:
+    print(
+        json.dumps(
+            {
+                "event": "sample_runtime_secrets",
+                "secrets": {
+                    secret_name: os.environ.get(secret_name)
+                    for secret_name in SAMPLE_SECRET_NAMES
+                },
+            },
+            separators=(",", ":"),
+        )
+    )
+
+
+def _log_runtime_identity() -> None:
+    print(
+        json.dumps(
+            {
+                "event": "sample_runtime_identity",
+                "runtime": {
+                    variable_name: os.environ.get(variable_name)
+                    for variable_name in RUNTIME_IDENTITY_NAMES
+                },
+            },
+            separators=(",", ":"),
+        )
+    )
+
+
 def main() -> None:
     input_path = _runtime_path("ORBIXAL_INPUT_PATH", DEFAULT_INPUT_PATH)
     output_path = _runtime_path("ORBIXAL_OUTPUT_PATH", DEFAULT_OUTPUT_PATH)
     input_value = _read_input(input_path)
     name = input_value["name"].strip()
 
+    _log_runtime_identity()
+    _log_sample_runtime_secrets()
     _write_output(output_path, {"greeting": f"Hello, {name}!"})
     print("Hello-world job completed successfully.")
 
