@@ -2,6 +2,16 @@
 
 A minimal Orbixal agent intended to be scheduled as a runner `job`. It reads a JSON object from the Runner-provided input path and writes its JSON result to the Runner-provided output path.
 
+## Runtime Secrets
+
+The manifest declares three sample runtime secrets:
+
+- `HELLO_WORLD_API_KEY` — required
+- `HELLO_WORLD_SIGNING_KEY` — required
+- `HELLO_WORLD_WEBHOOK_TOKEN` — optional
+
+Orbixal injects selected secret values into the matching environment variables at runtime. This hello-world agent intentionally does not log or return those values; the declarations exercise the secret creation and deployment-selection workflow safely.
+
 ## Run Locally
 
 ```bash

@@ -4,7 +4,7 @@ kind: agent
 metadata:
   name: Orbixal Agent Hello World
   slug: orbixal_agent_hello_world
-  version: 1.0.4
+  version: 1.0.5
   description: Reads a JSON name and writes a JSON greeting.
   tags:
     - example
@@ -12,6 +12,20 @@ metadata:
     - job
 
 spec:
+  secrets:
+    - secret_name: HELLO_WORLD_API_KEY
+      env_name: HELLO_WORLD_API_KEY
+      required: true
+      description: Sample API key required by the hello-world agent.
+    - secret_name: HELLO_WORLD_SIGNING_KEY
+      env_name: HELLO_WORLD_SIGNING_KEY
+      required: true
+      description: Sample signing key required by the hello-world agent.
+    - secret_name: HELLO_WORLD_WEBHOOK_TOKEN
+      env_name: HELLO_WORLD_WEBHOOK_TOKEN
+      required: false
+      description: Optional token used when webhook delivery is configured.
+
   build:
     context: "."
     dockerfile: Dockerfile
