@@ -4,7 +4,7 @@ kind: agent
 metadata:
   name: Orbixal Agent Hello World
   slug: orbixal_agent_hello_world
-  version: 1.0.9
+  version: 1.1.0
   description: Reads a JSON name and writes a JSON greeting.
   tags:
     - example
